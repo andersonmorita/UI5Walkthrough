@@ -1,0 +1,68 @@
+<mvc:View
+   controllerName="App.WalkThrough.controller.InvoiceList"
+   xmlns="sap.m"
+   xmlns:mvc="sap.ui.core.mvc">
+	
+   <List
+	  id="invoiceList"
+      headerText="{i18n>invoiceListTitle}"
+      class="sapUiResponsiveMargin"
+      width="auto"
+      items="{
+			path : 'invoice>/Invoices',
+			sorter : {
+				path : 'ShipperName',
+				group : true
+			}
+		}" >
+   	<!--step 24 filtering-->
+   	      <headerToolbar>
+         <Toolbar>
+            <Title text="{i18n>invoiceListTitle}"/>
+            <ToolbarSpacer/>
+            <SearchField width="50%" search="onFilterInvoices"/>
+         </Toolbar>
+      </headerToolbar>
+      <items>
+         <ObjectListItem
+            title="{invoice>Quantity} x {invoice>ProductName}"
+            number="{
+			parts: [{path: 'invoice>ExtendedPrice'}, {path: 'view>/currency'}],
+			type: 'sap.ui.model.type.Currency',
+			formatOptions: {
+				showMeasure: false
+			}
+		}"
+		numberUnit="{view>/currency}"
+		numberState="{= ${invoice>ExtendedPrice} > 50 ? 'Error' : 'Success' }"
+					type="Navigation"
+					press="onPress"		
+		>
+				<firstStatus>
+					<ObjectStatus text="{
+						path: 'invoice>Status',
+						formatter: '.formatter.statusText'
+					}"/>
+				</firstStatus>
+			</ObjectListItem>		
+      </items>
+   </List>
+</mvc:View>
+<!--step 21 data types line 13-->
+<!--step 22 expression biding line 21
+The condition of the operator is a value from our data model. 
+A model binding inside an expression binding has to be escaped with the $ sign as you can see in the code. 
+We set the state to 'Error' (the number will appear in red) if the price is higher than 50 and to ‘Success’ (the number will appear in green) otherwise.
+
+step 25 
+
+items="{invoice>/Invoices}"
+
+      items="{
+         path : 'invoice>/Invoices',
+         sorter : {
+            path : 'ProductName' 
+         }
+      }"
+
+-->
